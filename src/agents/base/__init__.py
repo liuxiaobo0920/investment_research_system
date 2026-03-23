@@ -1,3 +1,3 @@
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, AgentFailure
 
-__all__ = ["BaseAgent"]
+__all__ = ["BaseAgent", "AgentFailure"]
