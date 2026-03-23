@@ -20,7 +20,11 @@ async def research(company_name: str):
     report = await assembler.execute(input_data)
 
     # 输出报告
-    output_file = f"reports/{company_name}_{datetime.now().strftime('%Y%m%d')}.md"
+    from pathlib import Path
+    output_dir = Path("reports")
+    output_dir.mkdir(exist_ok=True)
+
+    output_file = output_dir / f"{company_name}_{datetime.now().strftime('%Y%m%d')}.md"
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(f"{report.ch1_overview}\n\n")
         f.write(f"{report.ch2_industry}\n\n")

@@ -52,36 +52,53 @@ class ReportAssembler(BaseAgent):
     def _format_industry(self, analysis) -> str:
         if not analysis:
             return "# 第二章：行业前景与公司地位\n\n数据缺失：行业分析未完成"
+
+        # 支持 dict 和对象
+        def get_val(obj, key, default='N/A'):
+            return obj.get(key, default) if isinstance(obj, dict) else getattr(obj, key, default)
+
         return f"""# 第二章：行业前景与公司地位
 
 ## 政策环境
-{analysis.get('policy_environment', 'N/A')}
+{get_val(analysis, 'policy_environment')}
 
 ## 行业周期
-{analysis.get('industry_cycle', 'N/A')}
+{get_val(analysis, 'industry_cycle')}
 
 ## 供需格局
-{analysis.get('supply_demand', 'N/A')}
+{get_val(analysis, 'supply_demand')}
 
 ## 竞争格局
-{analysis.get('competitive_landscape', 'N/A')}
+{get_val(analysis, 'competitive_landscape')}
 """
 
     def _format_moat(self, analysis) -> str:
         if not analysis:
             return "# 第三章：核心优势与护城河\n\n数据缺失：护城河分析未完成"
+
+        def get_val(obj, key, default='N/A'):
+            return obj.get(key, default) if isinstance(obj, dict) else getattr(obj, key, default)
+
+        moat_text = get_val(analysis, 'moat_summary', get_val(analysis, 'core_advantages'))
+        ten_year = get_val(analysis, 'ten_year_moat', get_val(analysis, 'moat_assessment'))
+
         return f"""# 第三章：核心优势与护城河
 
-{analysis.get('moat_summary', 'N/A')}
+{moat_text}
 
 ## 十年护城河判断
-{analysis.get('ten_year_moat', 'N/A')}
+{ten_year}
 """
 
     def _format_risk(self, analysis, round1) -> str:
+        def get_val(obj, key, default='N/A'):
+            return obj.get(key, default) if isinstance(obj, dict) else getattr(obj, key, default)
+
+        risk_text = get_val(analysis, 'risk_summary', get_val(analysis, 'risk_matrix')) if analysis else '数据缺失：风险分析未完成'
+
         base = f"""# 第四章：风险与挑战
 
-{analysis.get('risk_summary', 'N/A') if analysis else '数据缺失：风险分析未完成'}
+{risk_text}
 """
         if round1:
             base += f"""
@@ -95,15 +112,24 @@ class ReportAssembler(BaseAgent):
     def _format_finance(self, analysis) -> str:
         if not analysis:
             return "# 第五章：财务分析\n\n数据缺失：财务分析未完成"
+
+        def get_val(obj, key, default='N/A'):
+            return obj.get(key, default) if isinstance(obj, dict) else getattr(obj, key, default)
+
         return f"""# 第五章：财务分析
 
-{analysis.get('finance_summary', 'N/A')}
+{get_val(analysis, 'finance_summary', get_val(analysis, 'financial_health'))}
 """
 
     def _format_leader(self, analysis, round1) -> str:
+        def get_val(obj, key, default='N/A'):
+            return obj.get(key, default) if isinstance(obj, dict) else getattr(obj, key, default)
+
+        leader_text = get_val(analysis, 'leader_profile', get_val(analysis, 'profile')) if analysis else '数据缺失：人物画像未完成'
+
         base = f"""# 第六章：董事长人物画像
 
-{analysis.get('leader_profile', 'N/A') if analysis else '数据缺失：人物画像未完成'}
+{leader_text}
 """
         if round1:
             base += f"""
