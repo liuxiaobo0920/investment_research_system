@@ -1,5 +1,6 @@
 from .debate import RiskTrustJudgment, InvestmentJudgment, EvidenceRef, DebateEvent
 from .analysis import IndustryAnalysis, MoatAnalysis, RiskAnalysis, FinanceAnalysis, LeaderAnalysis
+from .data import FinancialData, WebSearchOutput, LeaderData, AnnualMetric
 
 __all__ = [
     "RiskTrustJudgment",
@@ -11,4 +12,8 @@ __all__ = [
     "RiskAnalysis",
     "FinanceAnalysis",
     "LeaderAnalysis",
+    "FinancialData",
+    "WebSearchOutput",
+    "LeaderData",
+    "AnnualMetric",
 ]
