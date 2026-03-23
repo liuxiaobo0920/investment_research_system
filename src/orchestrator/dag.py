@@ -65,7 +65,9 @@ class DAGOrchestrator:
                 task.status = TaskStatus.COMPLETED
                 if self.progress_callback:
                     self.progress_callback(task.id, TaskStatus.COMPLETED)
-            except Exception:
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f"Task {task.id} failed: {e}")
                 task.status = TaskStatus.FAILED
                 if self.progress_callback:
                     self.progress_callback(task.id, TaskStatus.FAILED)
